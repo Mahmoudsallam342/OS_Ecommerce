@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { getUserProfile } from "./user.controller.js";
+import { changePassword, getUserProfile } from "./user.controller.js";
 import {
-  authhuntication,
   authorization,
+  authuntication,
 } from "../../middlewares/auth.middle.js";
 
 const router = Router();
 
 router.get(
   "/",
-  authhuntication,
-  authorization(["admin"]),
+  authuntication,
+  authorization(["admin", "user"]),
   async (req, res, next) => {
     try {
       const result = await getUserProfile(req.user);
@@ -24,5 +24,11 @@ router.get(
     }
   },
 );
+router.patch(
+  "/changePassword",
+  authuntication,
+  authorization(["user", "admin"]),
 
+  changePassword,
+);
 export default router;

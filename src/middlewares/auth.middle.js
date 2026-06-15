@@ -8,7 +8,7 @@ export const rolesTypes = {
   user: "user",
   admin: "admin",
 };
-export const authhuntication = async (req, res, next) => {
+export const authuntication = async (req, res, next) => {
   //   const { authorization } = req.headers;
   //   const token = req.headers.authorization;
   //   console.log({ authorization });
@@ -50,6 +50,7 @@ export const authorization = (roles = []) => {
       if (!roles.includes(req.user.role)) {
         return res.status(403).json({ message: "unauthorized" });
       }
+      next();
     } catch (error) {
       res.json({ message: "forbidden user" }, error);
     }
