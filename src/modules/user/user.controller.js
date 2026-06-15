@@ -22,8 +22,12 @@ export const changePassword = async (req, res, next) => {
       { password: hashNewPassword },
       { new: true },
     );
+
     // req.user.password = hashNewPassword;
     // await req.user.save();
+    return res.status(200).json({
+      message: "Password changed successfully",
+    });
   } catch (error) {
     return next(error);
   }
