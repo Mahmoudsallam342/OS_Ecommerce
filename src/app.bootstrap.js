@@ -1,8 +1,9 @@
 import { NODE_ENV, port } from "../config/config.service.js";
 import { connectionDB } from "./DB/connection.db.js";
 
-import { authRouter, userRouter } from "./modules/index.js";
+import { authRouter, userRouter, categoryRouter } from "./modules/index.js";
 import express from "express";
+import { subCategoryRouter } from "./modules/subCategory/index.js";
 
 function bootstrap() {
   const app = express();
@@ -14,6 +15,8 @@ function bootstrap() {
   app.get("/", (req, res) => res.send("Hello World!"));
   app.use("/auth", authRouter);
   app.use("/user", userRouter);
+  app.use("/categories", categoryRouter);
+  app.use("/subcategories", subCategoryRouter);
 
   //invalid routing
   app.use("{/*dummy}", (req, res) => {
