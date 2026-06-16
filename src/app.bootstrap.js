@@ -1,7 +1,12 @@
 import { NODE_ENV, port } from "../config/config.service.js";
 import { connectionDB } from "./DB/connection.db.js";
 
-import { authRouter, userRouter, categoryRouter } from "./modules/index.js";
+import {
+  authRouter,
+  userRouter,
+  categoryRouter,
+  productRouter,
+} from "./modules/index.js";
 import express from "express";
 import { subCategoryRouter } from "./modules/subCategory/index.js";
 
@@ -17,6 +22,7 @@ function bootstrap() {
   app.use("/user", userRouter);
   app.use("/categories", categoryRouter);
   app.use("/subcategories", subCategoryRouter);
+  app.use("/products", productRouter);
 
   //invalid routing
   app.use("{/*dummy}", (req, res) => {
