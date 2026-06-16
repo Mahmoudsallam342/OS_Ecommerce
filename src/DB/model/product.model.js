@@ -38,14 +38,14 @@ const productSchema = new mongoose.Schema(
     images: [
       {
         type: String,
-        required: true,
+        // required: true,
       },
     ],
 
-    category: {
+    categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "categoryModel",
-      required: true,
+      // required: true,
     },
 
     brand: {
