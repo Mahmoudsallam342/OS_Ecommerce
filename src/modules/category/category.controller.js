@@ -79,3 +79,11 @@ export const deleteCategory = async (req, res, next) => {
     });
   }
 };
+
+export const uploadCategoryImage = (req, res, next) => {
+  try {
+    res.status(201).json({ message: "image uploaded", file: req.file });
+  } catch (error) {
+    return next(error);
+  }
+};
