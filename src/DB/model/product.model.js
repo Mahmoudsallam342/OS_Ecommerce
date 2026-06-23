@@ -42,15 +42,16 @@ const productSchema = new mongoose.Schema(
       },
     ],
 
-    categoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "categoryModel",
-      // required: true,
-    },
+    // categoryId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "categoryModel",
+    //   // required: true,
+    // },
 
-    brand: {
-      type: String,
-      trim: true,
+    brandId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Brand",
+      required: true,
     },
 
     ratings: {

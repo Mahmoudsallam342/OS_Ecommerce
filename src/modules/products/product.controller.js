@@ -5,8 +5,7 @@ import slugify from "slugify";
  *! ADD PRODUCT
  */
 export const addProduct = async (req, res, next) => {
-  const { name, price, description, categoryId, subCategoryId, stock } =
-    req.body;
+  const { name, price, description, brandId, stock } = req.body;
   console.log(req.body);
   if (!name) {
     return res.status(400).json({
@@ -19,7 +18,7 @@ export const addProduct = async (req, res, next) => {
       slug: slugify(name),
       price,
       description,
-      categoryId,
+      brandId,
       // brand,
       stock,
       // images,
