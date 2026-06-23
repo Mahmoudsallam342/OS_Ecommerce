@@ -12,16 +12,10 @@ export const addBrand = async (req, res, next) => {
   } = req.body;
 
   try {
-    if (!name) {
-      return res.status(400).json({
-        message: "name is required",
-      });
-    }
-
     const brand = await brandModel.create({
       name,
       slug: slugify(name),
-      logo,
+      // logo,
       description,
     });
 
