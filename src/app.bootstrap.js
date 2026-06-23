@@ -7,8 +7,10 @@ import {
   categoryRouter,
   productRouter,
 } from "./modules/index.js";
+import seederRouter from "./seeder/seeder.routes.js";
 import express from "express";
 import { subCategoryRouter } from "./modules/subCategory/index.js";
+import { connectRedis } from "./redisConfig/redis.js";
 
 function bootstrap() {
   const app = express();
@@ -16,6 +18,7 @@ function bootstrap() {
   app.use(express.json());
   //!connect DB
   connectionDB();
+  connectRedis();
   //application routing
   app.get("/", (req, res) => res.send("Hello World!"));
   app.use("/auth", authRouter);
@@ -23,6 +26,8 @@ function bootstrap() {
   app.use("/categories", categoryRouter);
   app.use("/subcategories", subCategoryRouter);
   app.use("/products", productRouter);
+  // ~seeder
+  app.use("/seeder", seederRouter);
 
   //invalid routing
   app.use("{/*dummy}", (req, res) => {

@@ -80,10 +80,21 @@ export const deleteCategory = async (req, res, next) => {
   }
 };
 
-export const uploadCategoryImage = (req, res, next) => {
+export const uploadCategoryImageCloud = async (req, res, next) => {
   try {
-    res.status(201).json({ message: "image uploaded", file: req.file });
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "categories",
+    });
+    fs.unlinkSync(req.file.path);
+    return res.status(201).json({ message: "image uploaded", file: req.file });
   } catch (error) {
     return next(error);
   }
 };
+// export const uploadCategoryImage = (req, res, next) => {
+//   try {
+//     res.status(201).json({ message: "image uploaded", file: req.file });
+//   } catch (error) {
+//     return next(error);
+//   }
+// };
