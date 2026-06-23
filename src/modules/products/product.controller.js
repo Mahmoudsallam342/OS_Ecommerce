@@ -1,5 +1,10 @@
 import { productModel } from "../../DB/model/product.model.js";
 import slugify from "slugify";
+import { redisClient } from "../../redisConfig/redis.js";
+//delete cache
+const clearProductsCache = async () => {
+  await redisClient.del("products");
+};
 
 /**
  *! ADD PRODUCT
@@ -23,6 +28,7 @@ export const addProduct = async (req, res, next) => {
       stock,
       // images,
     });
+    await clearProductsCache();
 
     return res.status(201).json({
       message: "product added successfully",
@@ -38,7 +44,21 @@ export const addProduct = async (req, res, next) => {
  */
 export const getAllProducts = async (req, res, next) => {
   try {
+    // await redisClient.del("products");
+    // 1. check cache
+    const cachedProducts = await redisClient.get("products");
+
+    if (cachedProducts) {
+      return res.status(200).json({
+        message: "products fetched from cache",
+        products: JSON.parse(cachedProducts),
+      });
+    }
+    // 2. fetch from DB
     const products = await productModel.find();
+
+    // 3. save to redis
+    await redisClient.setEx("products", 3600, JSON.stringify(products));
 
     return res.status(200).json({
       message: "products fetched successfully",
@@ -92,12 +112,12 @@ export const updateProduct = async (req, res, next) => {
     const product = await productModel.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-
     if (!product) {
       return res.status(404).json({
         message: "product not found",
       });
     }
+    await clearProductsCache();
 
     return res.status(200).json({
       message: "product updated successfully",
@@ -119,7 +139,7 @@ export const deleteProduct = async (req, res, next) => {
 
   try {
     const product = await productModel.findByIdAndDelete(id);
-
+    await clearProductsCache();
     if (!product) {
       return res.status(404).json({
         message: "product not found",
